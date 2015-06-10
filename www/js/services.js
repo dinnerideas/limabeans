@@ -1,4 +1,47 @@
+'use strict';
+
 angular.module('starter.services', [])
+
+.constant('FIREBASE_URL', 'https://dinner-ideas.firebaseio.com/')
+
+.factory('User', function($firebaseAuth, FIREBASE_URL) {
+
+  var ref = new Firebase(FIREBASE_URL);
+  var data = null;
+
+  return {
+    set: function(user) {
+      data = user;
+    },
+    get: function() {
+      return data;
+    },
+    login: function() {
+      ref.authWithPassword({
+        email    : user.email,
+        password : user.password
+      }, function(error, authData) {
+        if (error) {
+          console.log('Login Failed!', error);
+        } else {
+          console.log('Authenticated successfully with payload:', authData);
+          $scope.$apply(function() {
+            User.set(authData);
+            $scope.user = User.get();
+            console.log(User, User.get());
+          });
+        }
+      });
+    },
+    loggedIn: function() {
+      if (data) {
+        return Object.keys(data).length > 0;
+      } else {
+        return false;
+      }
+    }
+  };
+})
 
 .factory('Chats', function() {
   // Might use a resource here that returns a JSON array
