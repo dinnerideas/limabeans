@@ -43,6 +43,21 @@ angular.module('starter.services', [])
   };
 })
 
+.factory('Plan', function(FIREBASE_URL) {
+  var ref = new Firebase(FIREBASE_URL + 'plans');
+
+})
+
+.factory('Recipe', function(FIREBASE_URL) {
+  var ref = new Firebase(FIREBASE_URL + 'recipes');
+
+  return {
+    create: function(recipe) {
+      console.log(recipe);
+    }
+  }
+})
+
 .factory('Chats', function() {
   // Might use a resource here that returns a JSON array
 

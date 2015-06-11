@@ -40,8 +40,17 @@ angular.module('starter.controllers', [])
           console.log('Successfully created user account with uid:', userData.uid);
           var refUser = ref.child('users').child(userData.uid);
           refUser.set({
+            email: user.email,
             firstName: user.firstName,
             lastName: user.lastName
+          }, function(error) {
+            if (error) {
+              console.log('There was an error Synchronizing: ' + error);
+            } else {
+              console.log('Synchronization succeeded.');
+              $scope.login(user);
+              $state.go('tab.dash');
+            }
           });
         }
       });
