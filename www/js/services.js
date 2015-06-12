@@ -4,6 +4,8 @@ angular.module('starter.services', [])
 
 .constant('FIREBASE_URL', 'https://dinner-ideas.firebaseio.com/')
 
+.constant('BIGOVEN_URL', 'http://api.bigoven.com/recipes?&api_key=dvxFGZ6A9s7e7e3s4IIcZfX7MvmW44N2&rpp=200&pg=')
+
 .factory('User', function($firebaseAuth, FIREBASE_URL) {
 
   var ref = new Firebase(FIREBASE_URL);
@@ -43,9 +45,22 @@ angular.module('starter.services', [])
   };
 })
 
-.factory('Plan', function(FIREBASE_URL) {
-  var ref = new Firebase(FIREBASE_URL + 'plans');
-
+.factory('Search', function(BIGOVEN_URL, $http) {
+  var lastUsedPG = 1;
+  return {
+    page: function(num) {
+      return $http.get(BIGOVEN_URL + num).success(function(data, status) {
+        if (status === 200) {
+          lastUsedPG = num;
+        }
+      }).error(function(data, status, headers, config) {
+        console.log(data, status, headers, config);
+      });
+    },
+    getNextPage: function() {
+      this.page(lastUsedPG++);
+    }
+  };
 })
 
 .factory('Recipe', function(FIREBASE_URL) {

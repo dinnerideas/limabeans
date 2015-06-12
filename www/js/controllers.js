@@ -4,7 +4,13 @@ angular.module('starter.controllers', [])
 
 .constant('FIREBASE_URL', 'https://dinner-ideas.firebaseio.com/')
 
-.controller('DashCtrl', function($scope) {})
+.controller('DashCtrl', function($scope, Search) {
+  $scope.search = function() {
+    Search.page(1).success(function(data) {
+      $scope.recipes = data.Results;
+    });
+  };
+})
 
 .controller('ChatsCtrl', function($scope, Chats) {
   $scope.chats = Chats.all();
@@ -89,7 +95,6 @@ angular.module('starter.controllers', [])
 
   ref.onAuth(function(authData) {
     if (authData) {
-      console.log(authData);
       $scope.user = authData;
       var userAuth = ref.child('users').child($scope.user.uid);
       userAuth.on('value', function(data) {
