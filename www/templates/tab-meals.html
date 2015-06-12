@@ -1,0 +1,36 @@
+<ion-view view-title="Dashboard">
+  <ion-content class="padding">
+
+    <div class="list card" ng-repeat="recipe in recipes track by recipe.RecipeID | filter: {Category: 'Main Dish'}:strict">
+
+      <div class="item item">
+        <h2>{{ recipe.Title }} | {{ recipe.Category }}</h2>
+        <p>Yields {{ recipe.YieldNumber }} Servings</p>
+      </div>
+
+      <div class="item item-image">
+        <img ng-src="{{ recipe.ImageURL }}">
+      </div>
+
+      <div class="item tabs tabs-secondary tabs-icon-left">
+        <a class="tab-item" href="#">
+          <i class="icon ion-eye"></i>
+          View Recipe
+        </a>
+        <a class="tab-item" href="#">
+          <i class="icon ion-chatbox"></i>
+          Read Reviews
+        </a>
+        <a class="tab-item" href="#">
+          <i class="icon ion-share"></i>
+          Share
+        </a>
+      </div>
+
+    </div>
+
+    <button class="button" ng-click="showPopup()">
+      Create Meal Plan
+    </button>
+  </ion-content>
+</ion-view>

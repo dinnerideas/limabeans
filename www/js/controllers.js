@@ -12,6 +12,39 @@ angular.module('starter.controllers', [])
   };
 })
 
+.controller('MealsCtrl', function($scope, $ionicPopup, $timeout, Search) {
+  $scope.showPopup = function() {
+  $scope.data = {};
+
+  // An elaborate, custom popup
+  var myPopup = $ionicPopup.show({
+    template: '<input type="text" ng-model="data.days">',
+    title: 'Number of Days',
+    subTitle: 'How many days you want to plan meals for',
+    scope: $scope,
+    buttons: [
+      { text: 'Cancel' },
+      {
+        text: '<b>Save</b>',
+        type: 'button-positive',
+        onTap: function(e) {
+          if (!$scope.data.days) {
+            //don't allow the user to close unless he enters wifi password
+            e.preventDefault();
+          } else {
+            return $scope.data.days;
+          }
+        }
+      }
+    ]
+  });
+  myPopup.then(function(res) {
+    console.log('Tapped!', res);
+    myPopup.close();
+  });
+ };
+})
+
 .controller('ChatsCtrl', function($scope, Chats) {
   $scope.chats = Chats.all();
   $scope.remove = function(chat) {
@@ -55,7 +88,7 @@ angular.module('starter.controllers', [])
             } else {
               console.log('Synchronization succeeded.');
               $scope.login(user);
-              $state.go('tab.dash');
+              $state.go('tab.meals');
             }
           });
         }
@@ -102,7 +135,7 @@ angular.module('starter.controllers', [])
         User.set($scope.user);
         if (User.loggedIn()) {
           $ionicLoading.hide();
-          $state.go('tab.dash');
+          $state.go('tab.meals');
         }
       });
     }
